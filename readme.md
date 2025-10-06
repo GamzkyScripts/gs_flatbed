@@ -11,6 +11,7 @@ There are quite a lot of flatbed scripts available already, mostly paid versions
 - Works out of the box when using ox-target or qb-target, no dependencies on other scripts.
 - Many configurable options, like flatbed model, animations, locales and optional job checks.
 - Immersive animations and sound effects when interacting with the flatbed.
+
 **Resmon:** Always 0.0 ms unless interacting with the flatbed.
 
 ## Flatbed Vehicle Credits
