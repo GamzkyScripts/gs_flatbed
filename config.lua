@@ -1,7 +1,15 @@
 Config = {}
 
--- The used vehicle and bed model.
-Config.FlatbedHash = GetHashKey('flatbed')
+-- The used vehicle models on which the flatbed will spawn.
+Config.FlatBedModels = {
+    [`flatbed`] = {
+        [0] = { pos = {0.0, -3.6, 0.22}, rot = {0.0, 0.0, 0.0} }, -- This is the position of the bed with respect to the flatbed vehicle, after spawning in (so the bed is raised).
+        [1] = { pos = {0.0, -7.6, 0.22}, rot = {0.0, 0.0, 0.0} }, -- This is the position of the bed after translating backwards, when retracting the bed.
+        [2] = { pos = {0.0, -7.8, -0.7}, rot = {14.0, 0.0, 0.0} }, -- This is the position of the bed after rotating downwards, which allows vehicles to drive onto the bed.
+    },
+}
+
+-- The bed model
 Config.BedModel = 'inm_flatbed_base'
 
 -- Animation configuration.

@@ -52,8 +52,18 @@ end
 
 -- A function to create flatbed target interactions
 Functions.CreateFlatbedTarget = function()
+    local flatbedModels = {}
+    for k, v in pairs(Config.FlatBedModels) do
+        table.insert(flatbedModels, k)
+    end
+
+    if (next(flatbedModels) == nil) then
+        print("[ERROR] No flatbed vehicle models are configured in config.lua under FlatBedModels.")
+        return
+    end
+
     if (GetResourceState('ox_target') == 'started') then
-        exports.ox_target:addModel(Config.FlatbedHash, {
+        exports.ox_target:addModel(flatbedModels, {
             {
                 label = Config.Locales['lower_bed'],
                 icon = 'fa-solid fa-arrows-down-to-line',
@@ -104,7 +114,7 @@ Functions.CreateFlatbedTarget = function()
             },
         })
     elseif (GetResourceState('qb-target') == 'started') then
-        exports['qb-target']:AddTargetModel(Config.FlatbedHash, {
+        exports['qb-target']:AddTargetModel(flatbedModels, {
             options = {
                 {
                     label = Config.Locales['lower_bed'],

@@ -1,9 +1,3 @@
-local stateCoords = {
-    [0] = { pos = {0.0, -3.6, 0.22}, rot = {0.0, 0.0, 0.0} }, -- raised
-    [1] = { pos = {0.0, -7.6, 0.22}, rot = {0.0, 0.0, 0.0} }, -- backed
-    [2] = { pos = {0.0, -7.8, -0.7}, rot = {14.0, 0.0, 0.0} }, -- lower
-}
-
 local stateTimerConstants = {4.0, 2.0}
 
 CreateThread(function()
@@ -16,7 +10,8 @@ CreateThread(function()
             goto continue
         end
 
-        if GetEntityModel(vehicle) ~= Config.FlatbedHash then
+        local vehicleModel = GetEntityModel(vehicle)
+        if not Config.FlatBedModels[vehicleModel] then
             Wait(1000)
             goto continue
         end
@@ -28,6 +23,7 @@ CreateThread(function()
         end
         
         TriggerServerEvent('gs_flatbed:CreateBedEntity', NetworkGetNetworkIdFromEntity(vehicle))
+        Wait(1000)
 
         ::continue::
     end
@@ -42,7 +38,7 @@ AddEventHandler('gs_flatbed:AttachBedToVehicle', function(vehicleNetId, bedNetId
 
     -- If something went wrong and the entity is not networked, retry.
     if (not NetworkDoesNetworkIdExist(bedNetId)) then
-        TriggerServerEvent('gs_flatbed:RespawnBedEntity', vehicleNetId, bedNetId)
+        TriggerServerEvent('gs_flatbed:DeleteBedEntity', vehicleNetId, bedNetId)
         return
     end
 
@@ -52,6 +48,8 @@ AddEventHandler('gs_flatbed:AttachBedToVehicle', function(vehicleNetId, bedNetId
     while (not DoesEntityExist(bedEntity)) do
         Wait(10)
     end
+
+    local stateCoords = GetFlatbedStatePositions(flatbedVehicle)
     
     AttachEntityToEntity(
         bedEntity,
@@ -73,7 +71,7 @@ AddEventHandler('gs_flatbed:AttachBedToVehicle', function(vehicleNetId, bedNetId
 
     -- If something went wrong and the entity is not attached to the vehicle, retry.
     if (not IsEntityAttachedToEntity(bedEntity, flatbedVehicle)) then
-        TriggerServerEvent('gs_flatbed:RespawnBedEntity', vehicleNetId, bedNetId)
+        TriggerServerEvent('gs_flatbed:DeleteBedEntity', vehicleNetId, bedNetId)
     end
 end)
 
@@ -105,6 +103,9 @@ end)
 function LowerFlatbed(flatbedVehicle)
     -- Return if the flatbed does not have a bed or it is moving
     if not DoesFlatbedHaveBedAndNotMoving(flatbedVehicle) then return end
+
+    -- Get the positions of the bed states.
+    local stateCoords = GetFlatbedStatePositions(flatbedVehicle)
 
     -- Flatbed is now moving
     Entity(flatbedVehicle).state:set('bedMoving', true, true)
@@ -167,6 +168,9 @@ function RaiseFlatbed(flatbedVehicle)
     -- Return if the flatbed does not have a bed or it is moving
     if not DoesFlatbedHaveBedAndNotMoving(flatbedVehicle) then return end
 
+    -- Get the positions of the bed states.
+    local stateCoords = GetFlatbedStatePositions(flatbedVehicle)
+    
     -- Flatbed is now moving
     Entity(flatbedVehicle).state:set('bedMoving', true, true)
     local bedNet = Entity(flatbedVehicle).state.bedProp
@@ -308,4 +312,14 @@ function ReleaseSoundEffect()
     StopSound(soundId)
     ReleaseSoundId(soundId)
     soundId = nil
+end
+
+function GetFlatbedStatePositions(entity)
+    if not DoesEntityExist(entity) then return end
+
+    local vehicleModel = GetEntityModel(entity)
+    if (not Config.FlatBedModels[vehicleModel]) then return end
+
+    local stateCoords = Config.FlatBedModels[vehicleModel]
+    return stateCoords
 end

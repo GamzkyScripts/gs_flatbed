@@ -1,9 +1,9 @@
 fx_version 'cerulean'
-games { 'gta5' }
+game 'gta5'
 
 author 'Eviate'
 description 'Flatbed Script'
-version '1.0.0'
+version '1.0.1'
 
 lua54 'yes'
 
