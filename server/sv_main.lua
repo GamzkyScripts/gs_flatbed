@@ -56,7 +56,6 @@ AddEventHandler('gs_flatbed:CreateBedEntity', function(flatbedNetId)
     -- Get the entity owner of both entities.
     local flatbedVehicleEntityOwner = NetworkGetEntityOwner(flatbedVehicle)
     local bedEntityOwner = NetworkGetEntityOwner(bedEntity)
-    print(flatbedVehicleEntityOwner, bedEntityOwner)
 
     -- Wait for a maximum of 500 ms to give time for entity ownership to settle.
     local startTime = GetGameTimer()
