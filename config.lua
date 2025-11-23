@@ -32,4 +32,5 @@ Config.Locales = {
     ['attach_vehicle'] = 'Attach Vehicle',
     ['detach_vehicle'] = 'Detach Vehicle',
     ['no_vehicle_found'] = 'No vehicle found.',
+    ['rope_in_use'] = '~r~Detach the towrope first.',
 }

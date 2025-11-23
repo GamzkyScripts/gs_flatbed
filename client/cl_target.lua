@@ -13,6 +13,7 @@ function IsBedClearOfVehicle(vehicle)
 end
 
 function OriginLowerFlatbed(flatbedVehicle)
+    if (IsFlatbedUsingRope(flatbedVehicle)) then return end
 
     -- Execute lower flatbed on entity owner
     local entityOwner = NetworkGetEntityOwner(flatbedVehicle)
@@ -24,6 +25,7 @@ function OriginLowerFlatbed(flatbedVehicle)
 end
 
 function OriginRaiseFlatbed(flatbedVehicle)
+    if (IsFlatbedUsingRope(flatbedVehicle)) then return end
 
     -- Execute raise flatbed on entity owner
     local entityOwner = NetworkGetEntityOwner(flatbedVehicle)
@@ -35,6 +37,7 @@ function OriginRaiseFlatbed(flatbedVehicle)
 end
 
 function OriginAttachVehicle(flatbedVehicle)
+    if (IsFlatbedUsingRope(flatbedVehicle)) then return end
 
     local bedForOffset = NetToObj(Entity(flatbedVehicle).state.bedProp)
     if not DoesEntityExist(bedForOffset) then return end
@@ -64,6 +67,7 @@ function OriginAttachVehicle(flatbedVehicle)
 end
 
 function OriginDetachVehicle(flatbedVehicle)
+    if (IsFlatbedUsingRope(flatbedVehicle)) then return end
 
     local attachedVehicleNet = Entity(flatbedVehicle).state.attachedVehicle
     local attachedVehicle = NetToVeh(attachedVehicleNet)
@@ -171,3 +175,12 @@ end)
 CreateThread(function()
     Functions.CreateFlatbedTarget()
 end)
+
+function IsFlatbedUsingRope(flatbedVehicle)
+    local isRopeInUse = Entity(flatbedVehicle).state.RopeAttachedVehicle ~= nil
+    if isRopeInUse then
+        Functions.ShowNotification({ message = Config.Locales['rope_in_use'] })
+        return true
+    end
+    return false
+end
