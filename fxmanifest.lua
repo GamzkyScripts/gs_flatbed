@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'Eviate'
 description 'Flatbed Script'
-version '1.0.2'
+version '1.0.3'
 
 lua54 'yes'
 
