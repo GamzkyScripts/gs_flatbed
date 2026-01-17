@@ -1,21 +1,23 @@
-AddEventHandler('entityCreated', function(entity)
-    if not DoesEntityExist(entity) then return end
-    -- Check if entity is a vehicle
-    if GetEntityType(entity) ~= 2 then return end
+if Config.AutomaticBedSpawning then
+    AddEventHandler('entityCreated', function(entity)
+        if not DoesEntityExist(entity) then return end
+        -- Check if entity is a vehicle
+        if GetEntityType(entity) ~= 2 then return end
 
-    -- Ensure the entity is a flatbed
-    local vehicleModel = GetEntityModel(entity)
-    if not Config.FlatBedModels[vehicleModel] then return end
+        -- Ensure the entity is a flatbed
+        local vehicleModel = GetEntityModel(entity)
+        if not Config.FlatBedModels[vehicleModel] then return end
 
-    -- Ensure the flatbed does not already have a bed prop.
-    local entityBedNetId = Entity(entity).state.bedProp
-    if (entityBedNetId and DoesEntityExist(NetworkGetEntityFromNetworkId(entityBedNetId))) then return end
-    Entity(entity).state.bedProp = nil
+        -- Ensure the flatbed does not already have a bed prop.
+        local entityBedNetId = Entity(entity).state.bedProp
+        if (entityBedNetId and DoesEntityExist(NetworkGetEntityFromNetworkId(entityBedNetId))) then return end
+        Entity(entity).state.bedProp = nil
 
-    -- Make the owner create the bed
-    local flatbedNetId = NetworkGetNetworkIdFromEntity(entity)
-    TriggerEvent('gs_flatbed:CreateBedEntity', flatbedNetId)
-end)
+        -- Make the owner create the bed
+        local flatbedNetId = NetworkGetNetworkIdFromEntity(entity)
+        TriggerEvent('gs_flatbed:CreateBedEntity', flatbedNetId)
+    end)
+end
 
 AddEventHandler('entityRemoved', function(entity)
     -- Check if entity is a vehicle

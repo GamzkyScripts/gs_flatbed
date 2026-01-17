@@ -1,5 +1,9 @@
 Config = {}
 
+-- If the script works as expected, leave this setting as it is. 
+-- If you experience flatbed vehicles that have two beds, one that moves and one that stays fixed to the flatbed. Try setting this parameter to false. In this case the bed will only spawn after entering the vehicle.
+Config.AutomaticBedSpawning = true
+
 -- The used vehicle models on which the flatbed will spawn.
 Config.FlatBedModels = {
     [`flatbed`] = {
