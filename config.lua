@@ -26,8 +26,8 @@ Config.Animation = {
     duration = 1500, -- Animation duration in milliseconds
 }
 
--- Job configuration, set `Config.Jobs = nil` to disable.
-Config.Jobs = { ['mechanic'] = 0, ['police'] = 0 }
+-- Job configuration, set `Config.Jobs = { ['mechanic'] = 0, ['police'] = 0 }` to make the bed only available for the mechanic and police jobs.
+Config.Jobs = nil
 
 -- Localization configuration.
 Config.Locales = {
